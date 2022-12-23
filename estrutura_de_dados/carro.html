@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Estacionamento</title>
+</head>
+<body>
+    <div id="msg"></div>
+    <input type="text" name="nome" id="vaga" placeholder="Digite a vaga"><br>
+    <button type="submit" onclick="add(vaga.value)">Estacionar</button>
+    <button type="submit" onclick="remover(vaga.value)">Remover</button>
+
+    <div id="vagas">
+        <table border>
+            <tr>
+                <th>VA1</th>
+                <th>VA2</th>
+                <th>VA3</th>
+                <th>VA4</th>
+            </tr>
+            <tr>
+                <td id="va1"></td>
+                <td id="va2"></td>
+                <td id="va3"></td>
+                <td id="va4"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        var vetor = []
+        let obj = {va1:0,va2:1,va3:2,va4:3}
+
+        class Carro{
+            constructor(placa, celular){
+                this.placa=placa
+                this.celular=celular
+            }
+        }
+
+        const checar = (pos) => pos >= 0 && pos < 4
+
+        function add(vag){
+            let local = obj[vag]
+            if(vetor[local] == undefined && checar(local)){
+                let car = new Carro(prompt("Digite a placa: ").toUpperCase(), prompt("Digite o número do celular:"))
+                vetor[local] = car
+                update(vag)
+                msg.innerHTML = `<p style="color: green;">ESTACIONADO!</p>`
+            } else if (checar(local)){
+                msg.innerHTML = `<p style="color: red;">VAGA OCUPADA!</p>`
+            } else {
+                msg.innerHTML = `<p style="color: red;">VAGA NÃO EXISTE!</p>`
+            }
+        }
+
+        function remover(vag){
+            let local = obj[vag.toLowerCase()]
+            if(vetor[local] != undefined && checar(local)){
+                vetor[local] = undefined
+                msg.innerHTML = `<p style="color: green;">VAGA LIBERADA!</p>`
+                update(vag, false)
+            } else if(checar(local)){
+                msg.innerHTML = `<p style="color: red;">NÃO HÁ VAGA LIVRE!</p>`
+            } else {
+                msg.innerHTML = `<p style="color: red;">VAGA NÃO EXISTE!</p>`
+            }
+        }
+
+        function update(vaga, add=true){
+            if (add){
+                document.getElementById(vaga).innerHTML = '&#128663;'
+            } else{
+                document.getElementById(vaga).innerHTML = ' '
+            }
+        }
+    </script>
+</body>
+</html>
